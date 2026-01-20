@@ -1,0 +1,18 @@
+#Back
+upstream backend_api { server backend:8000; }
+
+#Minio
+upstream minio_s3 { server minio:${S3_INTERNAL_PORT}; }
+upstream minio_console { server minio:${S3_INTERNAL_UI_PORT}; }
+
+#Tools
+upstream grafana { server grafana:${GRAFANA_PORT}; }
+upstream pgadmin { server pgadmin:${PGADMIN_PORT}; }
+upstream rabbitmq_ui { server rabbitmq:${RABBITMQ_UI_PORT}; }
+upstream kibana { server kibana:${KIBANA_PORT}; }
+
+#Front
+upstream front_client { server frontend-client:3000; }
+upstream front_info { server frontend-info:3000; }
+upstream front_admin { server frontend-admin:3000; }
+upstream front_super { server frontend-super:3000; }
