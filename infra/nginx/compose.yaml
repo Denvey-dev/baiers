@@ -1,0 +1,47 @@
+#Базовый сервис под nginx
+services:
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: nginx_proxy
+    restart: unless-stopped
+    networks:
+      - app_network
+
+    depends_on:
+      - backend
+      - minio
+      - grafana
+      - pgadmin
+      - rabbitmq
+      - kibana
+      - frontend-client
+      - frontend-info
+      - frontend-admin
+      - frontend-super
+
+    volumes:
+      - ./snippets:/etc/nginx/snippets:ro
+      - ./templates/00-upstreams.conf.template:/etc/nginx/templates/00-upstreams.conf.template:ro
+    
+    environment:
+      - DOMAIN=${DOMAIN}
+      - API_STR=${API_STR}
+      - S3_INTERNAL_PORT=${S3_INTERNAL_PORT}
+      - S3_INTERNAL_UI_PORT=${S3_INTERNAL_UI_PORT}
+      - GRAFANA_PORT=${GRAFANA_PORT}
+      - PGADMIN_PORT=${PGADMIN_PORT}
+      - RABBITMQ_UI_PORT=${RABBITMQ_UI_PORT}
+      - KIBANA_PORT=${KIBANA_PORT}
+
+    healthcheck:
+      # --spider не скачивать файл, только проверить наличие
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:80"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+
+networks:
+  app_network:
+    external: true

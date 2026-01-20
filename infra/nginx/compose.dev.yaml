@@ -1,0 +1,7 @@
+#Перегруженный сервис nginx под dev
+services:
+  nginx:
+    ports:
+      - "80:80"
+    volumes:
+      - ./templates/dev.conf.template:/etc/nginx/templates/10-main.conf.template:ro

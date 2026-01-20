@@ -1,0 +1,10 @@
+#Перегруженный сервис nginx под prod
+services:
+  nginx:
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./templates/prod.conf.template:/etc/nginx/templates/10-main.conf.template:ro
+      - ./certs:/etc/nginx/certs:ro
