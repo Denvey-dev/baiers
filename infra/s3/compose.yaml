@@ -4,9 +4,6 @@ services:
     container_name: minio
     restart: unless-stopped
     command: server /data --console-address ":${S3_INTERNAL_UI_PORT}" --address ":${S3_INTERNAL_PORT}"
-    ports:
-      - "${S3_INTERNAL_PORT}:${S3_INTERNAL_PORT}"
-      - "${S3_INTERNAL_UI_PORT}:${S3_INTERNAL_UI_PORT}"
     environment:
       MINIO_ROOT_USER: ${S3_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${S3_ROOT_PASSWORD}
