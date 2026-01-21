@@ -1,0 +1,29 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: rabbitmq_broker
+    restart: unless-stopped
+    hostname: rabbitmq_host
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      # Если это не сделать, RabbitMQ может создать новую пустую базу при рестарте
+      RABBITMQ_NODENAME: rabbit@rabbitmq_host
+      # Ограничиваем память чтобы не упасть с ошибкой
+      RABBITMQ_VM_MEMORY_HIGH_WATERMARK: "0.7"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - app_network
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  rabbitmq_data:
+
+networks:
+  app_network:
+    external: true
