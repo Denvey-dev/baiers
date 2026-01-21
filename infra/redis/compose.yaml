@@ -15,8 +15,6 @@ services:
       --maxmemory-policy volatile-lru
     volumes:
       - redis_data:/data
-    ports:
-      - "${REDIS_PORT}:${REDIS_PORT}"
     networks:
       - app_network
     environment:
