@@ -51,6 +51,20 @@ services:
     networks:
       - app_network
 
+  elasticsearch-exporter:
+    image: prometheuscommunity/elasticsearch-exporter:v1.7.0
+    container_name: elasticsearch_exporter
+    restart: unless-stopped
+    command:
+      - '--es.uri=http://elastic:${ELASTIC_PASSWORD}@elasticsearch:9200'
+      - '--es.all'
+      - '--es.indices'
+    networks:
+      - app_network
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
 volumes:
   elastic_data:
 

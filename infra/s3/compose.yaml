@@ -10,6 +10,7 @@ services:
       MINIO_REGION: ${S3_MINIO_REGION_NAME}
       MINIO_BROWSER_REDIRECT_URL: ${S3_CONSOLE_URL}
       MINIO_SERVER_URL: "${S3_PUBLIC_DOMAIN}"
+      MINIO_PROMETHEUS_AUTH_TYPE: public
     volumes:
       - minio_data:/data
     networks:

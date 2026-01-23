@@ -119,6 +119,16 @@ server {
     }
 }
 
+server {
+    listen 80;
+    server_name flower.${DOMAIN};
+
+    location / {
+        proxy_pass http://flower;
+        include /etc/nginx/snippets/general.conf;
+    }
+}
+
 
 # Subdomains regex
 server {

@@ -22,7 +22,8 @@ services:
     volumes:
       - ./snippets:/etc/nginx/snippets:ro
       - ./templates/00-upstreams.conf.template:/etc/nginx/templates/00-upstreams.conf.template:ro
-    
+      - ./snippets/metrics.conf:/etc/nginx/conf.d/metrics.conf:ro
+
     environment:
       - DOMAIN=${DOMAIN}
       - API_STR=${API_STR}
@@ -39,6 +40,16 @@ services:
       retries: 3
       start_period: 5s
 
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:1.1.0
+    container_name: nginx_exporter
+    restart: unless-stopped
+    environment:
+      - SCRAPE_URI=http://nginx:8080/stub_status
+    networks:
+      - app_network
+    depends_on:
+      - nginx
 
 networks:
   app_network:

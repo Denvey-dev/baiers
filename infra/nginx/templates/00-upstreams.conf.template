@@ -10,6 +10,7 @@ upstream grafana { server grafana:3000; }
 upstream pgadmin { server pgadmin:80; }
 upstream rabbitmq_ui { server rabbitmq:15672; }
 upstream kibana { server kibana:5601; }
+upstream flower { server flower:5555; }
 
 #Front
 upstream front_client { server frontend-client:3000; }

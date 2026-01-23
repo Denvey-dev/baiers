@@ -143,6 +143,18 @@ server {
     }
 }
 
+server {
+    listen 443 ssl http2;
+    server_name flower.${DOMAIN};
+    
+    include /etc/nginx/snippets/ssl.conf;
+
+    location / {
+        proxy_pass http://flower;
+        include /etc/nginx/snippets/general.conf;
+    }
+}
+
 
 # Subdomains regex
 server {
