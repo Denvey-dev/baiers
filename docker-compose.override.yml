@@ -1,0 +1,7 @@
+# Перегруз compose под разработку
+services:
+  nginx:
+    ports:
+      - "80:80"
+    volumes:
+      - ./infra/nginx/templates/dev.conf.template:/etc/nginx/templates/10-main.conf.template:ro

@@ -1,0 +1,16 @@
+name: baiers_saas
+
+include:
+  - path: infra/postgres/compose.yaml
+  - path: infra/redis/compose.yaml
+  - path: infra/rabbitmq/compose.yaml
+  - path: infra/elasticsearch/compose.yaml
+  - path: infra/s3/compose.yaml
+  - path: infra/monitoring/compose.yaml
+  # Заглушка бека и фронтов
+  - path: stubs.compose.yaml
+  - path: infra/nginx/compose.yaml
+
+
+networks:
+  app_network: {}

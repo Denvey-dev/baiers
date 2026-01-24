@@ -32,21 +32,40 @@ services:
     
     healthcheck:
       test: ["CMD-SHELL", "curl -u elastic:${ELASTIC_PASSWORD} --fail http://localhost:9200/_cluster/health || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+      interval: 3s
+      timeout: 1s
+      retries: 50
+
+
+  setup-elastic:
+    image: curlimages/curl:latest
+    container_name: elastic_setup
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    volumes:
+      - ./setup/setup.sh:/scripts/setup.sh
+    environment:
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - KIBANA_PASSWORD=${KIBANA_PASSWORD}
+    entrypoint: ["/bin/sh", "/scripts/setup.sh"]
+    networks:
+      - app_network
+
 
   kibana:
     image: kibana:8.11.3
-    container_name: kibana_ui
+    container_name: kibana
     restart: unless-stopped
     depends_on:
       elasticsearch:
         condition: service_healthy
+      setup-elastic:
+        condition: service_completed_successfully
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-      - ELASTICSEARCH_USERNAME=elastic
-      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
       - TELEMETRY_ENABLED=false
     networks:
       - app_network
@@ -69,5 +88,4 @@ volumes:
   elastic_data:
 
 networks:
-  app_network:
-    external: true
+  app_network: {}

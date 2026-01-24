@@ -9,10 +9,9 @@ services:
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
       # Если это не сделать, RabbitMQ может создать новую пустую базу при рестарте
       RABBITMQ_NODENAME: rabbit@rabbitmq_host
-      # Ограничиваем память чтобы не упасть с ошибкой
-      RABBITMQ_VM_MEMORY_HIGH_WATERMARK: "0.7"
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
     networks:
       - app_network
     healthcheck:
@@ -25,5 +24,4 @@ volumes:
   rabbitmq_data:
 
 networks:
-  app_network:
-    external: true
+  app_network: {}

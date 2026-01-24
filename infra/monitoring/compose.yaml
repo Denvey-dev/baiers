@@ -38,5 +38,4 @@ volumes:
   grafana_data:
 
 networks:
-  app_network:
-    external: true
+  app_network: {}

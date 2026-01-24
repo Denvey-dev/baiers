@@ -29,6 +29,7 @@ server {
     location / {
         proxy_pass http://front_info;
         include /etc/nginx/snippets/general.conf;
+        try_files $uri /index.html;
     }
 }
 
@@ -166,5 +167,6 @@ server {
     location / {
         proxy_pass http://front_client;
         include /etc/nginx/snippets/general.conf;
+        try_files $uri /index.html;
     }
 }

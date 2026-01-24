@@ -3,10 +3,8 @@ services:
   nginx:
     image: nginx:1.25-alpine
     container_name: nginx_proxy
-    restart: unless-stopped
     networks:
       - app_network
-
     depends_on:
       - backend
       - minio
@@ -18,12 +16,10 @@ services:
       - frontend-info
       - frontend-admin
       - frontend-super
-
     volumes:
       - ./snippets:/etc/nginx/snippets:ro
       - ./templates/00-upstreams.conf.template:/etc/nginx/templates/00-upstreams.conf.template:ro
       - ./snippets/metrics.conf:/etc/nginx/conf.d/metrics.conf:ro
-
     environment:
       - DOMAIN=${DOMAIN}
       - API_STR=${API_STR}
@@ -31,9 +27,7 @@ services:
       - S3_HOST_CONSOLE=${S3_HOST_CONSOLE}
       - S3_INTERNAL_PORT=${S3_INTERNAL_PORT}
       - S3_INTERNAL_UI_PORT=${S3_INTERNAL_UI_PORT}
-
     healthcheck:
-      # --spider не скачивать файл, только проверить наличие
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:80"]
       interval: 10s
       timeout: 5s
@@ -43,7 +37,6 @@ services:
   nginx-exporter:
     image: nginx/nginx-prometheus-exporter:1.1.0
     container_name: nginx_exporter
-    restart: unless-stopped
     environment:
       - SCRAPE_URI=http://nginx:8080/stub_status
     networks:
@@ -52,5 +45,4 @@ services:
       - nginx
 
 networks:
-  app_network:
-    external: true
+  app_network: {}

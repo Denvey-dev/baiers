@@ -1,0 +1,61 @@
+# Заглушка бека и фронтов
+services:
+  backend:
+    image: python:3.11-alpine
+    container_name: backend_stub
+    command: >
+      sh -c "echo 'Hello from Backend Stub!' > index.html && python -m http.server 8000"
+    networks:
+      - app_network
+
+  flower:
+    image: python:3.11-alpine
+    container_name: flower_stub
+    command: >
+      sh -c "echo 'Hello from Flower Stub!' > index.html && python -m http.server 5555"
+    networks:
+      - app_network
+
+
+  worker:
+    image: alpine:latest
+    container_name: worker_stub
+    command: sh -c "while true; do sleep 1000; done"
+    networks:
+      - app_network
+
+
+  frontend-client:
+    image: python:3.11-alpine
+    container_name: front_client_stub
+    command: >
+      sh -c "echo 'Hello from Client Front Stub!' > index.html && python -m http.server 3000"
+    networks:
+      - app_network
+
+  frontend-info:
+    image: python:3.11-alpine
+    container_name: front_info_stub
+    command: >
+      sh -c "echo 'Hello from Info Front Stub!' > index.html && python -m http.server 3000"
+    networks:
+      - app_network
+
+  frontend-admin:
+    image: python:3.11-alpine
+    container_name: front_admin_stub
+    command: >
+      sh -c "echo 'Hello from Admin Front Stub!' > index.html && python -m http.server 3000"
+    networks:
+      - app_network
+
+  frontend-super:
+    image: python:3.11-alpine
+    container_name: front_super_stub
+    command: >
+      sh -c "echo 'Hello from Super Admin Stub!' > index.html && python -m http.server 3000"
+    networks:
+      - app_network
+
+networks:
+  app_network: {}
